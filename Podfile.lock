@@ -1,0 +1,13 @@
+PODS:
+  - Masonry (0.6.4)
+  - RunTrace (1.2)
+
+DEPENDENCIES:
+  - Masonry
+  - RunTrace
+
+SPEC CHECKSUMS:
+  Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
+  RunTrace: 4daf5c37b5d8dc0afdb7767eee7c34e1d7794336
+
+COCOAPODS: 0.39.0
