@@ -6,16 +6,12 @@
 //  Copyright © 2016年 GrayLand. All rights reserved.
 //
 
-#import "GLImagePickerViewController.h"
 #import "Masonry.h"
+#import "GLImagePicker.h"
+#import "GLImagePickerViewController.h"
 #import "ImageSelectedCollectionViewCell.h"
 
-#define k_width_screen  [UIScreen mainScreen].bounds.size.width
-#define k_height_screen [UIScreen mainScreen].bounds.size.height
-
-#define DEFINE_KEY_STRING(str) static NSString *const str = @#str;
 DEFINE_KEY_STRING(kImageSelectedCollectionViewCellReuseId)
-
 
 @interface GLImagePickerViewController ()
 <UICollectionViewDelegate,
@@ -52,22 +48,27 @@ UIImagePickerControllerDelegate>
     _singlePickBtn = [UIButton new];
     [_singlePickBtn setTitle:@"选择单张图片" forState:UIControlStateNormal];
     [_singlePickBtn setTitleColor:[UIColor colorWithRed:0.0 green:0.502 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+    [_singlePickBtn setTitleColor:[UIColor colorWithRed:0.4 green:0.8 blue:1.0 alpha:1.0] forState:UIControlStateHighlighted];
     [_singlePickBtn addTarget:self action:@selector(onSelectImgSingle:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_singlePickBtn];
     
     _multiPickBtn = [UIButton new];
     [_multiPickBtn setTitle:@"选择多张图片" forState:UIControlStateNormal];
     [_multiPickBtn setTitleColor:[UIColor colorWithRed:0.0 green:0.502 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+    [_multiPickBtn setTitleColor:[UIColor colorWithRed:0.4 green:0.8 blue:1.0 alpha:1.0] forState:UIControlStateHighlighted];
     [_multiPickBtn addTarget:self action:@selector(onSelectImgMulti:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_multiPickBtn];
     
     UICollectionViewFlowLayout *cvfl = [[UICollectionViewFlowLayout alloc] init];
+    cvfl.minimumLineSpacing = 0;
+    cvfl.minimumInteritemSpacing = 0;
     [cvfl setScrollDirection:UICollectionViewScrollDirectionVertical];
     
     _selectionsView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:cvfl];
     [_selectionsView registerClass:[ImageSelectedCollectionViewCell class] forCellWithReuseIdentifier:kImageSelectedCollectionViewCellReuseId];
     _selectionsView.backgroundColor      = [UIColor whiteColor];
     _selectionsView.alwaysBounceVertical = YES;
+//    _selectionsView.alignmentRectInsets
     _selectionsView.delegate             = self;
     _selectionsView.dataSource           = self;
     
@@ -100,8 +101,8 @@ UIImagePickerControllerDelegate>
 - (void)onSelectImgSingle:(UIButton  * _Nullable )sender
 {
     UIImagePickerController *vc = [[UIImagePickerController alloc] init];
-    vc.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-    vc.delegate = self;
+    vc.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;//UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    vc.delegate   = self;
 
     [self.navigationController presentViewController:vc animated:YES completion:nil];
 }
@@ -118,9 +119,12 @@ UIImagePickerControllerDelegate>
         
     }];
 }
+
 - (void)onSelectImgMulti:(UIButton  * _Nullable )sender
 {
+    GLImagePicker *imagePicker = [[GLImagePicker alloc] init];
     
+    [self.navigationController presentViewController:imagePicker animated:YES completion:nil];
 }
 
 #pragma mark -
@@ -154,7 +158,7 @@ UIImagePickerControllerDelegate>
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(floor(k_width_screen / 3), k_width_screen / 3);
+    return CGSizeMake(floor((k_width_screen - 4) / 3), k_width_screen / 3);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section

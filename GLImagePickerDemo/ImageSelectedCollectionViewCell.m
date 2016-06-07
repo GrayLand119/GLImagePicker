@@ -54,6 +54,7 @@
     
     [_imageView setImage:image];
     
+    NSLog(@"ImageSize:%@", NSStringFromCGSize(image.size));
 //    [_imageView setNeedsLayout];
 //    [_imageView layoutIfNeeded];
 }
