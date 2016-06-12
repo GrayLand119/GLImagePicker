@@ -22,6 +22,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "GLImageAssetGroupViewController.h"
 #import "GLImageAssetGroupViewCell.h"
+#import "GLImageSelectViewController.h"
 
 @interface GLImageAssetGroupViewController ()
 
@@ -184,6 +185,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     //TODO: push to picker view
+    GLImageSelectViewController *vc = [[GLImageSelectViewController alloc] initWithAssetGroups:self.assetGroups[indexPath.row] config:self.config];
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -1,4 +1,3 @@
-//    :LL1
 //   L00000:                           L00                              L0L
 //  L0000000:                          L00                              00L
 // L00010000L                          L00                              00L
@@ -11,78 +10,28 @@
 // 1000000000 :0L   000: 100:  00000   100000001000  00L 10L  000 :000 :00L
 //  00000000: 10L   L0000000   L0001   L0000000:0000000L 10L  000  0000000L
 //   L0000L   10L    000:L00:  :000:   10000000::0000:00 10L  000: :000LL0L
-//                              :00                 :
+//                              :00                 
 //                            0000L
 //                            0000:
 //                            :L1
 //
-//  Created by GrayLand on 16/6/6.
+//  Created by GrayLand on 16/6/12.
 //  Copyright © 2016年 GrayLand. All rights reserved.
 //
 
-#import "GLImagePicker.h"
-#import "GLImageAssetGroupViewController.h"
+#import <UIKit/UIKit.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import "GLImagePickerConfig.h"
 
-@interface GLImagePicker ()
+@interface GLImageSelectViewController: UIViewController
+#pragma mark- as
 
-@end
+#pragma mark- model
 
-@implementation GLImagePicker
+#pragma mark- view
 
-#pragma mark - def
-
-#pragma mark - override
-
-- (instancetype)init
-{
-    GLImageAssetGroupViewController *rootVC = [[GLImageAssetGroupViewController alloc] initWithConfig:[GLImagePickerConfig defaultConfig]];
-    
-    if (self = [super initWithRootViewController:rootVC]){
-//        NSString *bundlePath = [[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"GLImagePicker.bundle"];
-//        NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
-//        [bundle load];
-    }
-    
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-
-// 创建控件
-- (void)setupViews
-{
-    
-}
-
-// 初始化布局
-- (void)createLayouts
-{
-    
-}
-
-// 给控件创建事件
-- (void)createEvents
-{
-    
-}
-
-#pragma mark - private
-#pragma mark - getter / setter
-
-#pragma mark - api
-
-#pragma mark - model event
-#pragma mark 1 notification
-#pragma mark 2 KVO
-#pragma mark 3 OtherEvent
-
-#pragma mark - view event
-#pragma mark 1 target-action
-#pragma mark 2 delegate dataSource protocol
-
-#pragma mark -
+#pragma mark- api
+- (instancetype)initWithAssetGroups:(ALAssetsGroup *)assetGroups
+                             config:(GLImagePickerConfig *)config;
 
 @end

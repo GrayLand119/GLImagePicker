@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0141F23BD0C513BBB260A196 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEAC926F1DF3288E513043F3 /* libPods.a */; };
+		C3114CE81D0CF380009DD4EF /* GLImageSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3114CE71D0CF380009DD4EF /* GLImageSelectViewController.m */; };
+		C3114CEB1D0CFA0A009DD4EF /* GLImageSelectViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C3114CEA1D0CFA0A009DD4EF /* GLImageSelectViewCell.m */; };
+		C3114CF11D0D3609009DD4EF /* GLImagePicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C3114CF01D0D3609009DD4EF /* GLImagePicker.bundle */; };
+		C3114CF41D0D49B7009DD4EF /* GLImageSelectViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C3114CF31D0D49B7009DD4EF /* GLImageSelectViewFlowLayout.m */; };
+		C3114CF71D0D4F42009DD4EF /* GLCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3114CF61D0D4F42009DD4EF /* GLCollectionView.m */; };
 		C33F48C51D065BAC00D55B72 /* GLImageAssetGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C33F48C41D065BAC00D55B72 /* GLImageAssetGroupViewController.m */; };
 		C33F48CA1D065D7D00D55B72 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33F48C91D065D7D00D55B72 /* AssetsLibrary.framework */; };
 		C33F48CD1D0663C400D55B72 /* GLImagePickerConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = C33F48CC1D0663C400D55B72 /* GLImagePickerConfig.m */; };
@@ -44,6 +49,15 @@
 /* Begin PBXFileReference section */
 		29A9B67D8090CCE2E43A7ACB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		5AAF021AEAE3DEE13E199E72 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C3114CE61D0CF380009DD4EF /* GLImageSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLImageSelectViewController.h; sourceTree = "<group>"; };
+		C3114CE71D0CF380009DD4EF /* GLImageSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLImageSelectViewController.m; sourceTree = "<group>"; };
+		C3114CE91D0CFA0A009DD4EF /* GLImageSelectViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLImageSelectViewCell.h; sourceTree = "<group>"; };
+		C3114CEA1D0CFA0A009DD4EF /* GLImageSelectViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLImageSelectViewCell.m; sourceTree = "<group>"; };
+		C3114CF01D0D3609009DD4EF /* GLImagePicker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GLImagePicker.bundle; sourceTree = "<group>"; };
+		C3114CF21D0D49B7009DD4EF /* GLImageSelectViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLImageSelectViewFlowLayout.h; sourceTree = "<group>"; };
+		C3114CF31D0D49B7009DD4EF /* GLImageSelectViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLImageSelectViewFlowLayout.m; sourceTree = "<group>"; };
+		C3114CF51D0D4F42009DD4EF /* GLCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCollectionView.h; sourceTree = "<group>"; };
+		C3114CF61D0D4F42009DD4EF /* GLCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCollectionView.m; sourceTree = "<group>"; };
 		C33F48C31D065BAC00D55B72 /* GLImageAssetGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLImageAssetGroupViewController.h; sourceTree = "<group>"; };
 		C33F48C41D065BAC00D55B72 /* GLImageAssetGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLImageAssetGroupViewController.m; sourceTree = "<group>"; };
 		C33F48C91D065D7D00D55B72 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -172,6 +186,7 @@
 		C3F903401D055BD20013B6DF /* GLImagePicker */ = {
 			isa = PBXGroup;
 			children = (
+				C3114CF01D0D3609009DD4EF /* GLImagePicker.bundle */,
 				C3F903661D057AA40013B6DF /* GLImagePicker.h */,
 				C3F903671D057AA40013B6DF /* GLImagePicker.m */,
 				C33F48C31D065BAC00D55B72 /* GLImageAssetGroupViewController.h */,
@@ -181,6 +196,14 @@
 				C33F48CE1D06A05700D55B72 /* GLImageAssetGroupViewCell.h */,
 				C33F48CF1D06A05700D55B72 /* GLImageAssetGroupViewCell.m */,
 				C33F48D11D06A29E00D55B72 /* GLImagePickerConstant.h */,
+				C3114CE61D0CF380009DD4EF /* GLImageSelectViewController.h */,
+				C3114CE71D0CF380009DD4EF /* GLImageSelectViewController.m */,
+				C3114CE91D0CFA0A009DD4EF /* GLImageSelectViewCell.h */,
+				C3114CEA1D0CFA0A009DD4EF /* GLImageSelectViewCell.m */,
+				C3114CF21D0D49B7009DD4EF /* GLImageSelectViewFlowLayout.h */,
+				C3114CF31D0D49B7009DD4EF /* GLImageSelectViewFlowLayout.m */,
+				C3114CF51D0D4F42009DD4EF /* GLCollectionView.h */,
+				C3114CF61D0D4F42009DD4EF /* GLCollectionView.m */,
 			);
 			path = GLImagePicker;
 			sourceTree = "<group>";
@@ -311,6 +334,7 @@
 			files = (
 				C3F9031D1D055B330013B6DF /* LaunchScreen.storyboard in Resources */,
 				C3F9031A1D055B330013B6DF /* Assets.xcassets in Resources */,
+				C3114CF11D0D3609009DD4EF /* GLImagePicker.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,10 +412,14 @@
 				C3F903681D057AA40013B6DF /* GLImagePicker.m in Sources */,
 				C33F48C51D065BAC00D55B72 /* GLImageAssetGroupViewController.m in Sources */,
 				C33F48D01D06A05700D55B72 /* GLImageAssetGroupViewCell.m in Sources */,
+				C3114CE81D0CF380009DD4EF /* GLImageSelectViewController.m in Sources */,
 				C3F9030C1D055B330013B6DF /* main.m in Sources */,
+				C3114CF41D0D49B7009DD4EF /* GLImageSelectViewFlowLayout.m in Sources */,
 				C3F903181D055B330013B6DF /* GLImagePickerDemo.xcdatamodeld in Sources */,
+				C3114CEB1D0CFA0A009DD4EF /* GLImageSelectViewCell.m in Sources */,
 				C3F9035E1D055BFD0013B6DF /* ImageSelectedCollectionViewCell.m in Sources */,
 				C33F48CD1D0663C400D55B72 /* GLImagePickerConfig.m in Sources */,
+				C3114CF71D0D4F42009DD4EF /* GLCollectionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

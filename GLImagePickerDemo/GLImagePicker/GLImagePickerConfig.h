@@ -38,6 +38,8 @@ typedef NS_ENUM(NSUInteger, GLAssetFilterType) {
 @property (nonatomic, assign) CGFloat thumbnailWidth;///<缩略图宽度
 @property (nonatomic, assign) CGFloat thumbnailHeight;///<缩略图高度
 
+@property (nonatomic, assign) NSUInteger assetNumberOfColumn;
+@property (nonatomic, assign) UIEdgeInsets marginForSelectCell;
 
 + (instancetype)defaultConfig;
 

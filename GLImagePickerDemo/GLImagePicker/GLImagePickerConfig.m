@@ -36,8 +36,12 @@
     config.minNumberOfSelection = 1;
     config.maxNumberofSelection = 1;
     config.assetFilterType      = GLAssetFilterTypeAllAssets;
-    config.thumbnailWidth       = (k_width_screen - 5) / 4;
+    config.assetNumberOfColumn  = 4;
+    config.thumbnailWidth       = (k_width_screen - 3) / config.assetNumberOfColumn;
     config.thumbnailHeight      = config.thumbnailWidth;
+    config.marginForSelectCell  = UIEdgeInsetsMake(1, 1, 1, 1);
+    
     return config;
 }
+
 @end

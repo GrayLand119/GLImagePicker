@@ -17,7 +17,8 @@ DEFINE_KEY_STRING(kImageSelectedCollectionViewCellReuseId)
 <UICollectionViewDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout,
-UIImagePickerControllerDelegate>
+UIImagePickerControllerDelegate,
+UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UIButton *singlePickBtn;
 @property (nonatomic, strong) UIButton *multiPickBtn;
@@ -161,7 +162,9 @@ UIImagePickerControllerDelegate>
     return CGSizeMake(floor((k_width_screen - 4) / 3), k_width_screen / 3);
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake(0, 0, 0, 0);
 }
