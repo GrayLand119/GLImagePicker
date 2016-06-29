@@ -25,10 +25,11 @@
 #import "Masonry.h"
 #import "GLImageSelectViewFlowLayout.h"
 #import "GLCollectionView.h"
+#import "GLImagePreviewViewController.h"
 
 
 @interface GLImageSelectViewController ()
-<GLImageSelectViewCellDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+<GLImageSelectViewCellDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, GLImagePreviewViewControllerDelegate>
 
 @property (nonatomic, strong) GLCollectionView *collectionView;
 
@@ -279,6 +280,12 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
 - (void)imageSelectViewCellDidTapImageButton:(GLImageSelectViewCell *)cell
 {
     NSLog(@"tap image button");
+    
+    GLImagePreviewViewController *vc = [[GLImagePreviewViewController alloc] initWithStartIndex:cell.indexPath.row];
+    
+    vc.delegate = self;
+    
+    [self.navigationController pushViewController:vc animated:YES];
 //    if (cell.isSelected) {
 //        [self.selectedIndexPaths addObject:cell.indexPath];
 //    }else{
@@ -286,6 +293,14 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
 //    }
 //    
 //    [self updateNavitationTitle];
+}
+
+#pragma mark -
+#pragma mark GLImagePreviewViewControllerDelegate
+
+- (ALAsset *)imagePreviewViewController:(GLImagePreviewViewController *)vc assetAtIndex:(NSInteger)index
+{
+    return _assetArr[index];
 }
 #pragma mark -
 

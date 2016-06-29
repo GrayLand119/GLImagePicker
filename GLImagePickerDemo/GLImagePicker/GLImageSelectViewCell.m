@@ -5,6 +5,7 @@
 
 #import "GLImageSelectViewCell.h"
 #import "Masonry.h"
+#import "POP+MCAnimate.h"
 
 #define SELECT_BTN_SIZE CGSizeMake(44,44)
 
@@ -78,6 +79,15 @@
 {
     _selected = selected;
     _selectButton.selected = selected;
+    
+    if (selected) {
+        //TODO: POP Animation
+        _selectButton.pop_springSpeed = 12;
+        _selectButton.pop_springBounciness = 20;
+        
+        _selectButton.pop_scaleXY = CGPointMake(0.8, 0.8);
+        _selectButton.pop_spring.pop_scaleXY = CGPointMake(1.0, 1.0);
+    }
 }
 
 - (void)setAsset:(ALAsset *)asset
@@ -87,7 +97,6 @@
     UIImage *thumbnail = [UIImage imageWithCGImage:[asset thumbnail]];
     
     [_imageButton setImage:thumbnail forState:UIControlStateNormal];
-    
 }
 #pragma mark -
 #pragma mark Target

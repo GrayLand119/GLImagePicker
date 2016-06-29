@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>POP+MCAnimate.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -19,10 +24,15 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>pop.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>46AED5E6F4C901B9C786158099FE8298</key>
+		<key>407BD2ED20B7E8BBE301EF0032BF7DA8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -32,7 +42,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E7A956BD6D5119CD4ABCE7B7607185B5</key>
+		<key>6E16A9DEB1A625CBAB907A2D27E774E9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8E8E7D24FDD93ECA4DAE91588D9564D5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F92FE236CB2234C956432BB4D9DC56B5</key>
 		<dict>
 			<key>primary</key>
 			<true/>

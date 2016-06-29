@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '5E501872546864CDBD6A568A'
+               BlueprintIdentifier = '9677E8F22D6D57C1EB0742F5'
                BlueprintName = 'RunTrace'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libRunTrace.a'>
