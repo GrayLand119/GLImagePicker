@@ -34,7 +34,7 @@
 - (void)setupViews
 {
     _imageButton = [UIButton new];
-    _imageButton.backgroundColor = [UIColor redColor];
+//    _imageButton.backgroundColor = [UIColor redColor];
     _imageButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.contentView addSubview:_imageButton];
     
@@ -78,6 +78,16 @@
 {
     _selected = selected;
     _selectButton.selected = selected;
+}
+
+- (void)setAsset:(ALAsset *)asset
+{
+    _asset = asset;
+    
+    UIImage *thumbnail = [UIImage imageWithCGImage:[asset thumbnail]];
+    
+    [_imageButton setImage:thumbnail forState:UIControlStateNormal];
+    
 }
 #pragma mark -
 #pragma mark Target

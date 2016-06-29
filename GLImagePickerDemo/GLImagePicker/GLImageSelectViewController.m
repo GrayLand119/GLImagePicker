@@ -28,7 +28,7 @@
 
 
 @interface GLImageSelectViewController ()
-<GLImageSelectViewCellDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+<GLImageSelectViewCellDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) GLCollectionView *collectionView;
 
@@ -46,7 +46,7 @@
 #pragma mark - def
 DEFINE_KEY_STRING(kImageSelectViewCellReuseId)
 DEFINE_KEY_STRING(kFooterViewCellReuseId)
-DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
+//DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
 
 #pragma mark - override
 
@@ -65,6 +65,9 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
                 [_assetArr addObject:result];
             }
         }];
+        
+        [_assetArr addObject:[[ALAsset alloc] init]];// empty for footer
+        
         _config = config ? config : [GLImagePickerConfig defaultConfig];
         
         _numOfSelected = 0;
@@ -77,11 +80,22 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
 {
     [super viewDidLoad];
     
+    [self setupNavitationItem];
     [self updateNavitationTitle];
     [self setupViews];
     
     
     [self.collectionView reloadData];
+    
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    NSIndexPath *path = [NSIndexPath indexPathForRow:_assetArr.count - 1 inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:path atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
 }
 
 #pragma mark - private
@@ -94,8 +108,8 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
     
     [self.collectionView registerClass:[GLImageSelectViewCell class] forCellWithReuseIdentifier:kImageSelectViewCellReuseId];
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kFooterViewCellReuseId];
-    [self.collectionView registerClass:[UICollectionViewCell class] forSupplementaryViewOfKind:@"kFooter"
-                   withReuseIdentifier:kFooterViewExtCellReuseId];
+//    [self.collectionView registerClass:[UICollectionViewCell class] forSupplementaryViewOfKind:@"kFooter"
+//                   withReuseIdentifier:kFooterViewExtCellReuseId];
     
     self.collectionView.backgroundColor      = [UIColor whiteColor];
     self.collectionView.alwaysBounceVertical = YES;
@@ -105,17 +119,30 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
     [self.view addSubview:_collectionView];
 }
 
+- (void)setupNavitationItem
+{
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(onDone:)];
+    
+    
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
+}
 - (void)updateNavitationTitle
 {
     NSString *title;
+    
+    _numOfSelected = _selectedIndexPaths.count;
+    
     if (_numOfSelected) {
         title = [NSString stringWithFormat:@"已选择%ld张照片", _numOfSelected];
     }else{
         title = [self.assetGroups valueForProperty:ALAssetsGroupPropertyName];
     }
+    self.navigationItem.rightBarButtonItem.enabled = _numOfSelected;
     
     self.navigationItem.title = title;
 }
+
 // 初始化布局
 - (void)createLayouts
 {
@@ -127,16 +154,18 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
 {
     
 }
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    if ([kind isEqualToString:@"kFooter"]) {
-        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kFooterViewExtCellReuseId forIndexPath:indexPath];
-        cell.backgroundColor = [UIColor redColor];
-        return cell;
-    }else{
-        return nil;
-    }
-}
+
+//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+//{
+//    if ([kind isEqualToString:@"kFooter"]) {
+//        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kFooterViewExtCellReuseId forIndexPath:indexPath];
+//        cell.backgroundColor = [UIColor redColor];
+//        return cell;
+//    }else{
+//        return nil;
+//    }
+//}
+
 #pragma mark - getter / setter
 
 #pragma mark - api
@@ -148,6 +177,10 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
 
 #pragma mark - view event
 #pragma mark 1 target-action
+- (void)onDone:(id)sender
+{
+    NSLog(@"onDone");
+}
 #pragma mark 2 delegate dataSource protocol
 #pragma mark UICollectionViewDelegate & UICollectionViewDataSource
 
@@ -158,17 +191,18 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.assetArr.count + 1;
+    return self.assetArr.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == self.assetArr.count ) {
+    // the last one is footer cell
+    if (indexPath.row == self.assetArr.count - 1) {
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kFooterViewCellReuseId forIndexPath:indexPath];
         NSAssert(cell, @"FooterViewCellReuseId is nil");
         
         UILabel *title = [[UILabel alloc] initWithFrame:cell.bounds];
-        title.text = [NSString stringWithFormat:@"%ld张照片", self.assetArr.count];
+        title.text = [NSString stringWithFormat:@"%ld张照片", self.assetArr.count - 1];
         //TODO : 视频
         title.textColor = [UIColor blackColor];
         title.textAlignment = NSTextAlignmentCenter;
@@ -176,6 +210,8 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
         
         return cell;
     }
+    
+    // ImageSelectViewCell
     GLImageSelectViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kImageSelectViewCellReuseId forIndexPath:indexPath];
     
     NSAssert(cell, @"ImageSelectViewCellReuseId is nil");
@@ -186,10 +222,11 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
     cell.selected  = [self.selectedIndexPaths containsObject:indexPath];
 
     
-    //偷懒,设置左对齐
-    if (indexPath.row > self.assetArr.count - _config.assetNumberOfColumn + 1) {
-        NSInteger lastRowIndex = indexPath.row - self.assetArr.count + _config.assetNumberOfColumn - 1;
-        cell.frame = CGRectMake((_config.thumbnailWidth * lastRowIndex) + lastRowIndex,
+    // 偷懒,最后一列设置左对齐
+    NSInteger lastRowItemNum = (self.assetArr.count - 1) % _config.assetNumberOfColumn;
+    if (indexPath.row > self.assetArr.count - 2 - lastRowItemNum) {
+        NSInteger lastRowIndex = indexPath.row  % _config.assetNumberOfColumn;// 0...3
+        cell.frame = CGRectMake(((_config.thumbnailWidth + _config.marginForSelectCell.right) * lastRowIndex),
                                 cell.frame.origin.y,
                                 cell.frame.size.width,
                                 cell.frame.size.height);
@@ -198,6 +235,9 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
     }
     return cell;
 }
+
+#pragma mark -
+#pragma mark UICollectionViewDelegateFlowLayout
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -208,7 +248,7 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == self.assetArr.count) {
+    if (indexPath.row == self.assetArr.count - 1) {
         return CGSizeMake(k_width_screen, 44);//footer
     }else{
         return CGSizeMake(_config.thumbnailWidth, _config.thumbnailHeight);
@@ -222,21 +262,30 @@ DEFINE_KEY_STRING(kFooterViewExtCellReuseId)
     return UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
-
 #pragma mark -
 #pragma mark GLImageSelectViewCellDelegate
 - (void)imageSelectViewCellDidTapSelectButton:(GLImageSelectViewCell *)cell
 {
-
-}
-
-- (void)imageSelectViewCellDidTapImageButton:(GLImageSelectViewCell *)cell
-{
+    NSLog(@"tap select button");
     if (cell.isSelected) {
         [self.selectedIndexPaths addObject:cell.indexPath];
     }else{
         [self.selectedIndexPaths removeObject:cell.indexPath];
     }
+    
+    [self updateNavitationTitle];
+}
+
+- (void)imageSelectViewCellDidTapImageButton:(GLImageSelectViewCell *)cell
+{
+    NSLog(@"tap image button");
+//    if (cell.isSelected) {
+//        [self.selectedIndexPaths addObject:cell.indexPath];
+//    }else{
+//        [self.selectedIndexPaths removeObject:cell.indexPath];
+//    }
+//    
+//    [self updateNavitationTitle];
 }
 #pragma mark -
 
