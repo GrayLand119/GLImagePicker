@@ -14,4 +14,7 @@
 
 #define DEFINE_KEY_STRING(str) static NSString *const str = @#str;
 
+
+#define SELECT_BTN_SIZE CGSizeMake(44,44)
+
 #endif /* GLImagePickerConstant_h */

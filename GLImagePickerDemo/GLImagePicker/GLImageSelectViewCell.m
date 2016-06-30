@@ -6,8 +6,9 @@
 #import "GLImageSelectViewCell.h"
 #import "Masonry.h"
 #import "POP+MCAnimate.h"
+#import "GLImagePickerConstant.h"
 
-#define SELECT_BTN_SIZE CGSizeMake(44,44)
+
 
 @interface GLImageSelectViewCell ()
 

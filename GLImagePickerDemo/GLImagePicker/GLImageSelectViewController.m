@@ -281,7 +281,9 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
 {
     NSLog(@"tap image button");
     
-    GLImagePreviewViewController *vc = [[GLImagePreviewViewController alloc] initWithStartIndex:cell.indexPath.row];
+    GLImagePreviewViewController *vc;
+    vc = [[GLImagePreviewViewController alloc] initWithStartIndex:cell.indexPath.row
+                                                           assets:[_assetArr subarrayWithRange:NSMakeRange(0, _assetArr.count - 1)]];
     
     vc.delegate = self;
     
@@ -300,7 +302,11 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
 
 - (ALAsset *)imagePreviewViewController:(GLImagePreviewViewController *)vc assetAtIndex:(NSInteger)index
 {
-    return _assetArr[index];
+    if (index >= 0 && index < _assetArr.count) {
+        return _assetArr[index];
+    }else{
+        return nil;
+    }
 }
 #pragma mark -
 

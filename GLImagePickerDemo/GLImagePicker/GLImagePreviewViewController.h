@@ -15,12 +15,16 @@
 
 @required
 - (ALAsset *)imagePreviewViewController:(GLImagePreviewViewController *)vc assetAtIndex:(NSInteger)index;
+- (BOOL)imagePreviewViewController:(GLImagePreviewViewController *)vc isSelectedAtIndex:(NSInteger)index;
+
+- (void)imagePreviewViewController:(GLImagePreviewViewController *)vc didSelect:(BOOL)selected atIndex:(NSInteger)index;
+
 @end
 
 
 @interface GLImagePreviewViewController : UIViewController
 
-- (instancetype)initWithStartIndex:(NSInteger)index;
+- (instancetype)initWithStartIndex:(NSInteger)index assets:(NSArray *)assets;
 
 @property (nonatomic, weak) id <GLImagePreviewViewControllerDelegate> delegate;
 
