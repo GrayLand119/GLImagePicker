@@ -8,7 +8,9 @@
 @interface GLImageSelectViewFlowLayout()
 
 @property (nonatomic, assign) NSInteger columnNumber;
+
 @end
+
 @implementation GLImageSelectViewFlowLayout
 
 - (instancetype)initWithColumnNum:(NSInteger)columnNumber

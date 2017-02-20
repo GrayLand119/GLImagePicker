@@ -34,8 +34,8 @@
 
 @property (nonatomic, weak) id <GLImageSelectViewCellDelegate> delegate;
 
-@property (nonatomic, copy) NSIndexPath *indexPath;
-@property (nonatomic, strong) ALAsset *asset;
+@property (nonatomic, copy  ) NSIndexPath *indexPath;
+@property (nonatomic, strong) ALAsset     *asset;
 
 @property (nonatomic, assign, getter=isSelected) BOOL selected;
 

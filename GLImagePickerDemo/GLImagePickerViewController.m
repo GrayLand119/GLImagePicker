@@ -18,7 +18,8 @@ DEFINE_KEY_STRING(kImageSelectedCollectionViewCellReuseId)
 UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout,
 UIImagePickerControllerDelegate,
-UINavigationControllerDelegate>
+UINavigationControllerDelegate,
+GLImagePickerDelegate>
 
 @property (nonatomic, strong) UIButton *singlePickBtn;
 @property (nonatomic, strong) UIButton *multiPickBtn;
@@ -60,15 +61,15 @@ UINavigationControllerDelegate>
     [self.view addSubview:_multiPickBtn];
     
     UICollectionViewFlowLayout *cvfl = [[UICollectionViewFlowLayout alloc] init];
-    cvfl.minimumLineSpacing = 0;
+    cvfl.minimumLineSpacing      = 0;
     cvfl.minimumInteritemSpacing = 0;
     [cvfl setScrollDirection:UICollectionViewScrollDirectionVertical];
     
     _selectionsView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:cvfl];
     [_selectionsView registerClass:[ImageSelectedCollectionViewCell class] forCellWithReuseIdentifier:kImageSelectedCollectionViewCellReuseId];
+    
     _selectionsView.backgroundColor      = [UIColor whiteColor];
     _selectionsView.alwaysBounceVertical = YES;
-//    _selectionsView.alignmentRectInsets
     _selectionsView.delegate             = self;
     _selectionsView.dataSource           = self;
     
@@ -112,9 +113,11 @@ UINavigationControllerDelegate>
     UIImage *imgPicked = info[UIImagePickerControllerOriginalImage];
     
     if (imgPicked) {
+        
         [_imageSelectionArr addObject:imgPicked];
         [_selectionsView reloadData];
     }
+    
     [picker dismissViewControllerAnimated:YES completion:^{
         
     }];
@@ -122,7 +125,9 @@ UINavigationControllerDelegate>
 
 - (void)onSelectImgMulti:(UIButton  * _Nullable )sender
 {
-    GLImagePicker *imagePicker = [[GLImagePicker alloc] init];
+    GLImagePicker *imagePicker = [[GLImagePicker alloc] initWithImagePickerConfig:[GLImagePickerConfig defaultConfig]];
+    
+    imagePicker.imagePickerDelegate = self;// GLImagePickerDelegate
     
     [self.navigationController presentViewController:imagePicker animated:YES completion:nil];
 }
@@ -168,5 +173,13 @@ UINavigationControllerDelegate>
     return UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
+#pragma mark - GLImagePickerDelegate
+
+- (void)imagePicker:(GLImagePicker *)imagePicker didPickWithImages:(NSArray<UIImage *> *)images
+{
+    [self.imageSelectionArr addObjectsFromArray:images];
+    
+    [self.selectionsView reloadData];
+}
 
 @end

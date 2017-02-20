@@ -23,15 +23,21 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "GLImagePickerConfig.h"
 
+typedef NS_ENUM(NSUInteger, SelectAssetType) {
+    SelectAssetTypeImage,
+    SelectAssetTypeVideo,
+    SelectAssetTypeUnknow
+};
+
+typedef void (^DidSelectedHandler)(NSArray *objs,SelectAssetType type);
+
 @interface GLImageSelectViewController: UIViewController
-#pragma mark- as
 
-#pragma mark- model
+@property (nonatomic, copy) DidSelectedHandler didSelectedHandler;///< Maybe image or video
 
-#pragma mark- view
-
-#pragma mark- api
 - (instancetype)initWithAssetGroups:(ALAssetsGroup *)assetGroups
-                             config:(GLImagePickerConfig *)config;
+                             config:(GLImagePickerConfig *)config
+                 didSelectedHandler:(DidSelectedHandler)didSelectedHandler;
+
 
 @end

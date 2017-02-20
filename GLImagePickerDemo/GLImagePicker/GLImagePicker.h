@@ -29,14 +29,44 @@
 
 #import <UIKit/UIKit.h>
 #import "GLImagePickerConstant.h"
+#import "GLImageAssetGroupViewController.h"
+
+@class GLImagePicker;
+
+@protocol GLImagePickerDelegate <NSObject>
+
+@optional
+
+/**
+ *  选择图片代理
+ *
+ *  @param imagePicker  图片选择器
+ *  @param images       选择的图片
+ */
+- (void)imagePicker:(GLImagePicker *)imagePicker didPickWithImages:(NSArray <UIImage *> *)images;
+
+/**
+ *  选择视频代理
+ *
+ *  @param imagePicker 图片选择器
+ *  @param video       选择的视频
+ */
+- (void)imagePicker:(GLImagePicker *)imagePicker didPickWithVideos:(NSArray *)videos;
+
+@end
+
 
 @interface GLImagePicker: UINavigationController
-#pragma mark- as
 
-#pragma mark- model
+/**
+ *  初始化控件
+ *
+ *  @param imagePickerConfig 初始化的配置文件, when it is nil, to set the default [GLImagePickerConfig defaultConfig]
+ *
+ *  @return
+ */
+- (instancetype)initWithImagePickerConfig:(GLImagePickerConfig *)imagePickerConfig;
 
-#pragma mark- view
-
-#pragma mark- api
+@property (nonatomic, weak) id <GLImagePickerDelegate> imagePickerDelegate;
 
 @end

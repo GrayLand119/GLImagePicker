@@ -22,8 +22,40 @@
 #import <UIKit/UIKit.h>
 #import "GLImagePickerConfig.h"
 
+
+@class GLImageAssetGroupViewController;
+
+@protocol GLImageAssetGroupViewControllerDelegate <NSObject>
+
+@optional
+
+/**
+ *  选择图片代理
+ *
+ *  @param imagePicker  图片选择器
+ *  @param images       选择的图片
+ */
+- (void)imageAssetGroupViewController:(GLImageAssetGroupViewController *)viewController didPickWithImages:(NSArray <UIImage *> *)images;
+
+/**
+ *  选择视频代理
+ *
+ *  @param imagePicker 图片选择器
+ *  @param video       选择的视频
+ */
+- (void)imageAssetGroupViewController:(GLImageAssetGroupViewController *)viewController didPickWithVideos:(NSArray *)videos;
+
+@end
+
+
+/*===============================================================
+            Interface
+ ===============================================================*/
+
 @interface GLImageAssetGroupViewController: UITableViewController
 
 - (instancetype)initWithConfig:(GLImagePickerConfig *)config;
+
+@property (nonatomic, weak) id <GLImageAssetGroupViewControllerDelegate> delegate;
 
 @end

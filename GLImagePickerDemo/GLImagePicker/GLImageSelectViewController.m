@@ -29,7 +29,11 @@
 
 
 @interface GLImageSelectViewController ()
-<GLImageSelectViewCellDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, GLImagePreviewViewControllerDelegate>
+<GLImageSelectViewCellDelegate,
+UICollectionViewDelegate,
+UICollectionViewDataSource,
+UICollectionViewDelegateFlowLayout,
+GLImagePreviewViewControllerDelegate>
 
 @property (nonatomic, strong) GLCollectionView *collectionView;
 
@@ -37,7 +41,8 @@
 @property (nonatomic, strong) NSMutableArray <ALAsset *> *assetArr;///<数据集合
 @property (nonatomic, strong) GLImagePickerConfig *config;///<配置文件
 
-@property (nonatomic, strong) NSMutableArray <NSIndexPath *> *selectedIndexPaths;
+@property (nonatomic, strong) NSMutableArray *selectedIndex;
+//@property (nonatomic, strong) NSMutableArray <NSIndexPath *> *selectedIndex;///<已选择了的资源
 @property (nonatomic, assign) NSInteger numOfSelected;
 
 @end
@@ -52,16 +57,19 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
 #pragma mark - override
 
 - (instancetype)initWithAssetGroups:(ALAssetsGroup *)assetGroups
-                             config:(GLImagePickerConfig  *)config;
+                             config:(GLImagePickerConfig  *)config
+                 didSelectedHandler:(DidSelectedHandler)didSelectedHandler
 {
     if (self = [super init]) {
         
         NSAssert(assetGroups, @"assetGroups can't be nil");
-        _assetGroups       = assetGroups;
-        _assetArr          = [NSMutableArray array];
-        _selectedIndexPaths = [NSMutableArray array];
+        _assetGroups        = assetGroups;
+        _assetArr           = [NSMutableArray array];
+        _selectedIndex      = [NSMutableArray array];
+        _didSelectedHandler = didSelectedHandler;
         
         [_assetGroups enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+            
             if (result) {
                 [_assetArr addObject:result];
             }
@@ -85,10 +93,7 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
     [self updateNavitationTitle];
     [self setupViews];
     
-    
     [self.collectionView reloadData];
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -96,11 +101,12 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
     [super viewWillAppear:animated];
     
     NSIndexPath *path = [NSIndexPath indexPathForRow:_assetArr.count - 1 inSection:0];
+    
     [self.collectionView scrollToItemAtIndexPath:path atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
 }
 
 #pragma mark - private
-// 创建控件
+
 - (void)setupViews
 {
     GLImageSelectViewFlowLayout *flow = [[GLImageSelectViewFlowLayout alloc] initWithColumnNum:_config.assetNumberOfColumn];
@@ -122,17 +128,20 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
 
 - (void)setupNavitationItem
 {
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(onDone:)];
-    
+    UIBarButtonItem *rightItem =
+    [[UIBarButtonItem alloc] initWithTitle:@"完成"
+                                     style:UIBarButtonItemStylePlain
+                                    target:self
+                                    action:@selector(onDone:)];
     
     self.navigationItem.rightBarButtonItem = rightItem;
-    
 }
+
 - (void)updateNavitationTitle
 {
     NSString *title;
     
-    _numOfSelected = _selectedIndexPaths.count;
+    _numOfSelected = _selectedIndex.count;
     
     if (_numOfSelected) {
         title = [NSString stringWithFormat:@"已选择%ld张照片", _numOfSelected];
@@ -181,7 +190,44 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
 - (void)onDone:(id)sender
 {
     NSLog(@"onDone");
+    
+    if (!_didSelectedHandler) {
+        return;
+    }
+    
+    __weak __typeof(self) ws = self;
+    
+    NSMutableArray *tArr = [NSMutableArray array];
+    
+    [self.selectedIndex enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        ALAsset *asset = ws.assetArr[[obj integerValue]];
+        
+        //TODO: 大于iOS9的要用新的方法
+        
+        UIImage *img = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+        
+        [tArr addObject:img];
+        
+    }];
+    
+//    ALAsset *tAsset   = [tArr lastObject];
+//    NSString *typeStr = [tAsset valueForProperty:ALAssetPropertyType];
+//    
+//    SelectAssetType type;
+//    
+//    if ([typeStr isEqualToString:ALAssetTypePhoto]) {
+//        type = SelectAssetTypeImage;
+//    }else if ([typeStr isEqualToString:ALAssetTypeVideo]) {
+//        type = SelectAssetTypeVideo;
+//    }else{
+//        type = SelectAssetTypeUnknow;
+//    }
+    
+    _didSelectedHandler(tArr, SelectAssetTypeImage);
+    
 }
+
 #pragma mark 2 delegate dataSource protocol
 #pragma mark UICollectionViewDelegate & UICollectionViewDataSource
 
@@ -205,7 +251,7 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
         UILabel *title = [[UILabel alloc] initWithFrame:cell.bounds];
         title.text = [NSString stringWithFormat:@"%ld张照片", self.assetArr.count - 1];
         //TODO : 视频
-        title.textColor = [UIColor blackColor];
+        title.textColor     = [UIColor blackColor];
         title.textAlignment = NSTextAlignmentCenter;
         [cell.contentView addSubview:title];
         
@@ -220,9 +266,8 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
     cell.delegate  = self;
     cell.asset     = self.assetArr[indexPath.row];
     cell.indexPath = indexPath;
-    cell.selected  = [self.selectedIndexPaths containsObject:indexPath];
+    cell.selected  = [self.selectedIndex containsObject:@(indexPath.row)];
 
-    
     // 偷懒,最后一列设置左对齐
     NSInteger lastRowItemNum = (self.assetArr.count - 1) % _config.assetNumberOfColumn;
     if (indexPath.row > self.assetArr.count - 2 - lastRowItemNum) {
@@ -243,6 +288,7 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -265,18 +311,30 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
 
 #pragma mark -
 #pragma mark GLImageSelectViewCellDelegate
+
+/**
+ *  点击选择按钮
+ *
+ *  @param cell
+ */
 - (void)imageSelectViewCellDidTapSelectButton:(GLImageSelectViewCell *)cell
 {
     NSLog(@"tap select button");
+    
     if (cell.isSelected) {
-        [self.selectedIndexPaths addObject:cell.indexPath];
+        [self.selectedIndex addObject:@(cell.indexPath.row)];
     }else{
-        [self.selectedIndexPaths removeObject:cell.indexPath];
+        [self.selectedIndex removeObject:@(cell.indexPath.row)];
     }
     
     [self updateNavitationTitle];
 }
 
+/**
+ *  点击预览图片按钮
+ *
+ *  @param cell
+ */
 - (void)imageSelectViewCellDidTapImageButton:(GLImageSelectViewCell *)cell
 {
     NSLog(@"tap image button");
@@ -285,20 +343,19 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
     vc = [[GLImagePreviewViewController alloc] initWithStartIndex:cell.indexPath.row
                                                            assets:[_assetArr subarrayWithRange:NSMakeRange(0, _assetArr.count - 1)]];
     
-    vc.delegate = self;
+    vc.delegate = self;//GLImagePreviewViewControllerDelegate
     
     [self.navigationController pushViewController:vc animated:YES];
-//    if (cell.isSelected) {
-//        [self.selectedIndexPaths addObject:cell.indexPath];
-//    }else{
-//        [self.selectedIndexPaths removeObject:cell.indexPath];
-//    }
-//    
-//    [self updateNavitationTitle];
+
 }
 
 #pragma mark -
 #pragma mark GLImagePreviewViewControllerDelegate
+
+- (BOOL)imagePreviewViewController:(GLImagePreviewViewController *)vc isSelectedAtIndex:(NSInteger)index
+{
+    return [_selectedIndex containsObject:@(index)];
+}
 
 - (ALAsset *)imagePreviewViewController:(GLImagePreviewViewController *)vc assetAtIndex:(NSInteger)index
 {
@@ -307,6 +364,23 @@ DEFINE_KEY_STRING(kFooterViewCellReuseId)
     }else{
         return nil;
     }
+}
+
+- (void)imagePreviewViewController:(GLImagePreviewViewController *)vc didSelect:(BOOL)selected atIndex:(NSInteger)index
+{
+    NSLog(@"selected:%@, %@", selected ? @"YES" : @"NO", @(index));
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    
+    if (selected) {
+        [self.selectedIndex addObject:@(index)];
+    }else {
+        [self.selectedIndex removeObject:@(index)];
+    }
+    
+    [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+    
+    [self updateNavitationTitle];
 }
 #pragma mark -
 

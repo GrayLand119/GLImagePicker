@@ -23,13 +23,13 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, GLAssetFilterType) {
-    GLAssetFilterTypeAllPhotos,
-    GLAssetFilterTypeAllVideos,
-    GLAssetFilterTypeAllAssets,
+    GLAssetFilterTypeAllPhotos,///<图片
+    GLAssetFilterTypeAllVideos,///<视频
+    GLAssetFilterTypeAllAssets,///<所有
 };
+
 @interface GLImagePickerConfig : NSObject
 
-// custom code
 @property (nonatomic, assign) NSUInteger minNumberOfSelection;///<最少选择几张照片
 @property (nonatomic, assign) NSUInteger maxNumberofSelection;///<最多选择几张照片
 

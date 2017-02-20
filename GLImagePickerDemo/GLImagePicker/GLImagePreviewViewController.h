@@ -14,7 +14,9 @@
 @protocol GLImagePreviewViewControllerDelegate <NSObject>
 
 @required
+
 - (ALAsset *)imagePreviewViewController:(GLImagePreviewViewController *)vc assetAtIndex:(NSInteger)index;
+
 - (BOOL)imagePreviewViewController:(GLImagePreviewViewController *)vc isSelectedAtIndex:(NSInteger)index;
 
 - (void)imagePreviewViewController:(GLImagePreviewViewController *)vc didSelect:(BOOL)selected atIndex:(NSInteger)index;

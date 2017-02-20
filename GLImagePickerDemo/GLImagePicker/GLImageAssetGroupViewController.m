@@ -59,24 +59,15 @@
 }
 
 #pragma mark - private
-// 创建控件
+
 - (void)setupViews
 {
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
-// 初始化布局
-- (void)createLayouts
-{
-    
-}
-
-// 给控件创建事件
-- (void)setupTarget
-{
-    
-}
-
+/**
+ *  加载资源
+ */
 - (void)loadAssets
 {
     ALAssetsLibraryGroupsEnumerationResultsBlock usingBlock = ^(ALAssetsGroup *group, BOOL *stop){
@@ -185,7 +176,20 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     //TODO: push to picker view
-    GLImageSelectViewController *vc = [[GLImageSelectViewController alloc] initWithAssetGroups:self.assetGroups[indexPath.row] config:self.config];
+    __weak __typeof(self) ws = self;
+    GLImageSelectViewController *vc =
+    [[GLImageSelectViewController alloc] initWithAssetGroups:self.assetGroups[indexPath.row]
+                                                      config:self.config
+                                          didSelectedHandler:^(NSArray *objs, SelectAssetType type) {
+                                              
+                                              //TODO: 判断类别 图片or视频
+                                              if (type == SelectAssetTypeImage) {
+                                                  [ws.delegate imageAssetGroupViewController:ws didPickWithImages:objs];
+                                              }else if (type == SelectAssetTypeVideo) {
+                                                  [ws.delegate imageAssetGroupViewController:ws didPickWithVideos:objs];
+                                              }
+                                              
+                                          }];
     
     [self.navigationController pushViewController:vc animated:YES];
 }

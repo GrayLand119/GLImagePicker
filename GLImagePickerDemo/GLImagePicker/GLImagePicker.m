@@ -21,68 +21,67 @@
 //
 
 #import "GLImagePicker.h"
-#import "GLImageAssetGroupViewController.h"
+
 
 @interface GLImagePicker ()
+<GLImageAssetGroupViewControllerDelegate>
 
 @end
 
 @implementation GLImagePicker
 
-#pragma mark - def
+#pragma mark - Public
 
+- (instancetype)initWithImagePickerConfig:(GLImagePickerConfig *)imagePickerConfig
+{
+    
+    if (!imagePickerConfig) {
+        imagePickerConfig = [GLImagePickerConfig defaultConfig];
+    }
+    
+    GLImageAssetGroupViewController *rootVC = [[GLImageAssetGroupViewController alloc] initWithConfig:imagePickerConfig];
+    
+    rootVC.delegate = self;// GLImageAssetGroupViewControllerDelegate
+    
+    if (self = [super initWithRootViewController:rootVC]){
+        //        NSString *bundlePath = [[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"GLImagePicker.bundle"];
+        //        NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+        //        [bundle load];
+    }
+    
+    return self;
+}
 #pragma mark - override
 
 - (instancetype)init
 {
-    GLImageAssetGroupViewController *rootVC = [[GLImageAssetGroupViewController alloc] initWithConfig:[GLImagePickerConfig defaultConfig]];
-    
-    if (self = [super initWithRootViewController:rootVC]){
-//        NSString *bundlePath = [[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"GLImagePicker.bundle"];
-//        NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
-//        [bundle load];
-    }
-    
-    return self;
+    return [self initWithImagePickerConfig:[GLImagePickerConfig defaultConfig]];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-}
-
-// 创建控件
-- (void)setupViews
-{
+    
     
 }
 
-// 初始化布局
-- (void)createLayouts
+#pragma mark - GLImageAssetGroupViewControllerDelegate
+
+- (void)imageAssetGroupViewController:(GLImageAssetGroupViewController *)viewController didPickWithImages:(NSArray<UIImage *> *)images
 {
+    if (self.imagePickerDelegate && [self.imagePickerDelegate respondsToSelector:@selector(imagePicker:didPickWithImages:)] ) {
+        [self.imagePickerDelegate imagePicker:self didPickWithImages:images];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     
 }
 
-// 给控件创建事件
-- (void)createEvents
+- (void)imageAssetGroupViewController:(GLImageAssetGroupViewController *)viewController didPickWithVideo:(NSArray *)videos
 {
-    
+    if (self.imagePickerDelegate && [self.imagePickerDelegate respondsToSelector:@selector(imagePicker:didPickWithVideos:)]) {
+        [self.imagePickerDelegate imagePicker:self didPickWithVideos:videos];
+    }
 }
-
-#pragma mark - private
-#pragma mark - getter / setter
-
-#pragma mark - api
-
-#pragma mark - model event
-#pragma mark 1 notification
-#pragma mark 2 KVO
-#pragma mark 3 OtherEvent
-
-#pragma mark - view event
-#pragma mark 1 target-action
-#pragma mark 2 delegate dataSource protocol
-
-#pragma mark -
 
 @end

@@ -28,7 +28,6 @@
 
 @implementation GLImagePickerConfig
 
-// custom code
 + (instancetype)defaultConfig
 {
     GLImagePickerConfig *config = [[GLImagePickerConfig alloc] init];

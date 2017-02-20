@@ -36,17 +36,14 @@
 - (void)setupViews
 {
     _imageButton = [UIButton new];
-//    _imageButton.backgroundColor = [UIColor redColor];
     _imageButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.contentView addSubview:_imageButton];
     
     _selectButton = [UIButton new];
-//    _selectButton.backgroundColor = [UIColor greenColor];
     _selectButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    _selectButton.imageEdgeInsets = UIEdgeInsetsMake(9, 9, 3, 3);
+    _selectButton.imageEdgeInsets       = UIEdgeInsetsMake(9, 9, 3, 3);
     [_selectButton setImage:[UIImage imageNamed:@"GLImagePicker.bundle/ico_select_normal"] forState:UIControlStateNormal];
     [_selectButton setImage:[UIImage imageNamed:@"GLImagePicker.bundle/ico_select_selected.png"] forState:UIControlStateSelected];
-    
     [_imageButton addSubview:_selectButton];
 }
 
@@ -78,15 +75,15 @@
 
 - (void)setSelected:(BOOL)selected
 {
-    _selected = selected;
+    _selected              = selected;
     _selectButton.selected = selected;
     
     if (selected) {
         //TODO: POP Animation
-        _selectButton.pop_springSpeed = 12;
-        _selectButton.pop_springBounciness = 20;
-        
-        _selectButton.pop_scaleXY = CGPointMake(0.8, 0.8);
+        _selectButton.pop_springSpeed        = 12;
+        _selectButton.pop_springBounciness   = 20;
+
+        _selectButton.pop_scaleXY            = CGPointMake(0.8, 0.8);
         _selectButton.pop_spring.pop_scaleXY = CGPointMake(1.0, 1.0);
     }
 }

@@ -131,6 +131,11 @@
     self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:negativeSpacer, rightItem, nil];
 
 
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePreviewViewController:isSelectedAtIndex:)]) {
+        
+        BOOL isSelected = [self.delegate imagePreviewViewController:self isSelectedAtIndex:_index];
+        _selectBtn.selected = isSelected;
+    }
     
 }
 #pragma mark -
@@ -190,7 +195,11 @@
 
 - (void)onSelect:(UIButton *)sender
 {
+    sender.selected = !sender.isSelected;
     
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePreviewViewController:didSelect:atIndex:)]) {
+        [self.delegate imagePreviewViewController:self didSelect:sender.isSelected atIndex:_index];
+    }
 }
 
 #pragma mark -
